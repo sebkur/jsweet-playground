@@ -1,25 +1,88 @@
-task wrapper(type: Wrapper) {
-    gradleVersion = 2.3
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url '/tmp/maven-repo' }
+        maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
+        maven { url 'http://repository.jsweet.org/artifactory/libs-snapshot-local' }
+        maven { url 'http://repository.jsweet.org/artifactory/plugins-release-local' }
+        maven { url 'http://repository.jsweet.org/artifactory/plugins-snapshot-local' }
+        maven { url 'http://google-diff-match-patch.googlecode.com/svn/trunk/maven' }
+    }
+    dependencies {
+        classpath('org.jsweet:jsweet-gradle-plugin:2.0.0-SNAPSHOT') { //
+            transitive = true }
+        classpath('de.topobyte:gradle-dependency-info-plugin:0.0.1');
+        classpath('de.topobyte:gradle-dependency-unpack-plugin:0.0.1');
+    }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'maven'
+repositories {
+    mavenCentral()
+    maven { url '/tmp/maven-repo' }
+    maven { url 'http://mvn.topobyte.de' }
+    maven { url 'http://mvn.slimjars.com' }
+    maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
+    maven { url 'http://repository.jsweet.org/artifactory/libs-snapshot-local' }
+}
 
 group = pGroup
 version = pVersion
 
-if (project.hasProperty("topobyte")) {
-    apply from: 'file:///' + System.getProperty("user.home") \
-        + '/.gradle/topobyte.gradle'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.jsweet.jsweet-gradle-plugin'
+apply plugin: 'de.topobyte.dependency-info-gradle-plugin'
+apply plugin: 'de.topobyte.dependency-unpack-gradle-plugin'
+
+depinfo {
+    debug = false
+    configuration = 'runtime'
+}
+depunpack {
+    debug = true
+    configuration = 'runtime'
 }
 
-repositories {
-    maven {
-        url 'http://mvn.topobyte.de'
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/java'
+        }
     }
-    mavenCentral()
+}
+
+compileJava {
+    enabled = false
 }
 
 dependencies {
+    // compile 'de.topobyte:jsweet-publishing-test:0.0.1'
+    compile 'org.jsweet:jsweet-core:5-SNAPSHOT'
+    compile 'org.jsweet.candies.trusted:es6-promise:0.0.0-SNAPSHOT'
+
+    compile 'org.jsweet.candies.ext:jquery:1.10.0-SNAPSHOT'
+
+    compile 'de.topobyte:geomath:0.0.2'
+    //compile 'de.topobyte:line-printer-core:0.0.1'
+    //compile 'de.topobyte:adt-misc:0.0.2'
+    //compile 'de.topobyte:chromaticity-core:0.0.2'
+    //compile 'de.topobyte:collections-utils:0.0.4'
+    //compile 'de.topobyte:viewports-core:0.0.2'
+    //compile 'de.topobyte:lightweight-geometry:1.0.0'
+    //compile 'de.topobyte:lightweight-geometry-convex-hull:1.0.0'
+    //compile 'org.slf4j:slf4j-api:1.6.1'
+}
+
+jsweet {
+    verbose = true
+    encoding = 'UTF-8'
+    sourceMap = true
+    outDir = new File('build/target/javascript')
+    tsOut = new File('build/target/.ts')
+    candiesJsOut = new File('build/target/candies')
+    targetVersion = 'ES3'
+    includes = [
+        'de/topobyte/**/*.java',
+        'org/slf4j/**/*.java',
+        ]
 }
