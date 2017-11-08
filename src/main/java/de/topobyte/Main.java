@@ -4,6 +4,9 @@ import static def.dom.Globals.console;
 import static def.dom.Globals.document;
 import static def.dom.Globals.window;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.topobyte.geomath.WGS84;
 import def.dom.Document;
 import def.dom.Element;
@@ -11,6 +14,8 @@ import def.dom.HTMLElement;
 
 public class Main
 {
+
+	static Logger logger = LoggerFactory.getLogger(Main.class);
 
 	public static void main(String[] args)
 	{
@@ -22,6 +27,9 @@ public class Main
 	public Main()
 	{
 		console.info("constructor");
+
+		logger.info("logging something here");
+
 		Element body = document.getElementsByTagName("body").item(0);
 
 		body.appendChild(document.createElement("br"));

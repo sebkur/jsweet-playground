@@ -62,6 +62,7 @@ dependencies {
 
     compile 'org.jsweet.candies.ext:jquery:1.10.0-SNAPSHOT'
 
+    compile 'de.topobyte:jsweet-slf4j-console:0.0.1'
     compile 'de.topobyte:geomath:0.0.2'
     //compile 'de.topobyte:line-printer-core:0.0.1'
     //compile 'de.topobyte:adt-misc:0.0.2'
@@ -70,7 +71,6 @@ dependencies {
     //compile 'de.topobyte:viewports-core:0.0.2'
     //compile 'de.topobyte:lightweight-geometry:1.0.0'
     //compile 'de.topobyte:lightweight-geometry-convex-hull:1.0.0'
-    //compile 'org.slf4j:slf4j-api:1.6.1'
 }
 
 jsweet {
